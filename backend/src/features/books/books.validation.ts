@@ -37,7 +37,7 @@ const baseQuerySchema = z.object({
     z.number().min(1).max(100, 'Limit must be between 1 and 100').default(10)
   ),
   search: z.string().max(255, 'Search term too long').optional(),
-  sortBy: z.enum(['title']).default('title'),
+  sortBy: z.enum(['title', 'price', 'createdAt']).default('title'),
   sortOrder: z.enum(['asc', 'desc']).default('asc'),
 });
 

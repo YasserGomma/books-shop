@@ -140,7 +140,9 @@ export class BooksService {
     }
 
     // Build order by
-    const orderBy = sortOrder === 'desc' ? desc(books[sortBy]) : asc(books[sortBy]);
+    const sortField = sortBy === 'title' ? books.title : 
+                     sortBy === 'price' ? books.price : books.createdAt;
+    const orderBy = sortOrder === 'desc' ? desc(sortField) : asc(sortField);
 
     // Get total count
     const [totalResult] = await db
@@ -238,7 +240,9 @@ export class BooksService {
     }
 
     // Build order by
-    const orderBy = sortOrder === 'desc' ? desc(books[sortBy]) : asc(books[sortBy]);
+    const sortField = sortBy === 'title' ? books.title : 
+                     sortBy === 'price' ? books.price : books.createdAt;
+    const orderBy = sortOrder === 'desc' ? desc(sortField) : asc(sortField);
 
     // Get total count
     const [totalResult] = await db
@@ -445,7 +449,9 @@ export class BooksService {
     }
 
     // Build order by
-    const orderBy = sortOrder === 'desc' ? desc(books[sortBy]) : asc(books[sortBy]);
+    const sortField = sortBy === 'title' ? books.title : 
+                     sortBy === 'price' ? books.price : books.createdAt;
+    const orderBy = sortOrder === 'desc' ? desc(sortField) : asc(sortField);
 
     // Get total count
     const [totalResult] = await db
