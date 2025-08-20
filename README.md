@@ -282,6 +282,7 @@ books-shop/
 | Method | Endpoint | Description | Auth Required |
 |--------|----------|-------------|---------------|
 | `GET` | `/api/users/profile` | Get user profile (alternative) | ✅ |
+| `PUT` | `/api/users/profile` | Update user profile (alternative) | ✅ |
 
 ### 📚 Books Shop (Public)
 | Method | Endpoint | Description | Auth Required |

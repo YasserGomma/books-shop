@@ -39,6 +39,44 @@ export class UsersController {
     }
   }
 
+  static async updateCurrentUserProfile(c: Context) {
+    try {
+      const user = c.get('user');
+      const data = c.get('validatedData') as UpdateUserInput;
+      
+      if (!user) {
+        throw new HTTPException(401, {
+          message: 'User not authenticated',
+        });
+      }
+
+      const updatedUser = await UsersService.updateUser(user.id, data);
+      
+      return c.json({
+        success: true,
+        message: 'Profile updated successfully',
+        data: updatedUser,
+      });
+    } catch (error) {
+      if (error instanceof Error) {
+        if (error.message === 'User not found') {
+          throw new HTTPException(404, {
+            message: 'User not found',
+          });
+        }
+        if (error.message === 'Email already exists') {
+          throw new HTTPException(400, {
+            message: 'Email already exists',
+          });
+        }
+      }
+      
+      throw new HTTPException(400, {
+        message: error instanceof Error ? error.message : 'Failed to update profile',
+      });
+    }
+  }
+
   static async getAllUsers(c: Context) {
     try {
       const query = c.get('validatedQuery') as GetUsersQueryInput;

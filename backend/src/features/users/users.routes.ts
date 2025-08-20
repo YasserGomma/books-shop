@@ -5,11 +5,13 @@ import { getUsersQuerySchema, updateUserSchema } from './users.validation';
 
 const users = new Hono();
 
-// Protected user profile route
+// Protected user profile routes
 users.use('/profile', authMiddleware);
 users.get('/profile', UsersController.getCurrentUserProfile);
+users.put('/profile', validateJson(updateUserSchema), UsersController.updateCurrentUserProfile);
 
-// Admin routes (you can add admin middleware later)
+// Admin routes (require authentication for now - TODO: add admin middleware)
+users.use('/', authMiddleware);
 users.get('/', validateQuery(getUsersQuerySchema), UsersController.getAllUsers);
 users.get('/:id', UsersController.getUserById);
 users.put('/:id', validateJson(updateUserSchema), UsersController.updateUser);

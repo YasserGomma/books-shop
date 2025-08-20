@@ -15,13 +15,13 @@ export const getUsersQuerySchema = z.object({
 export const updateUserSchema = z.object({
   firstName: z
     .string()
-    .min(2, 'First name must be at least 2 characters')
-    .max(50, 'First name must be less than 50 characters')
+    .refine(val => val.length === 0 || val.length >= 2, 'First name must be at least 2 characters if provided')
+    .refine(val => val.length <= 50, 'First name must be less than 50 characters')
     .optional(),
   lastName: z
     .string()
-    .min(2, 'Last name must be at least 2 characters')
-    .max(50, 'Last name must be less than 50 characters')
+    .refine(val => val.length === 0 || val.length >= 2, 'Last name must be at least 2 characters if provided')
+    .refine(val => val.length <= 50, 'Last name must be less than 50 characters')
     .optional(),
   email: z.string().email('Invalid email format').optional(),
 });
