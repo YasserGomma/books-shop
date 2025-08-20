@@ -1,0 +1,805 @@
+{
+  "info": {
+    "name": "Books Shop API",
+    "description": "Complete API documentation for the Books Shop backend built with Hono.js, PostgreSQL, Redis, and TypeScript",
+    "version": "1.0.0",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8000/api",
+      "type": "string"
+    },
+    {
+      "key": "authToken",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{authToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "item": [
+    {
+      "name": "🔐 Authentication",
+      "description": "User authentication endpoints including login, register, logout, and password management",
+      "item": [
+        {
+          "name": "Register User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (responseCode.code === 201) {",
+                  "    const responseJson = pm.response.json();",
+                  "    pm.collectionVariables.set('authToken', responseJson.data.token);",
+                  "    pm.test('User registered successfully', () => {",
+                  "        pm.expect(responseJson.success).to.be.true;",
+                  "        pm.expect(responseJson.data.token).to.exist;",
+                  "    });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"testuser\",\n  \"email\": \"test@example.com\",\n  \"password\": \"password123\",\n  \"firstName\": \"Test\",\n  \"lastName\": \"User\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "register"]
+            },
+            "description": "Register a new user with username, email, password, and name details"
+          }
+        },
+        {
+          "name": "Login User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (responseCode.code === 200) {",
+                  "    const responseJson = pm.response.json();",
+                  "    pm.collectionVariables.set('authToken', responseJson.data.token);",
+                  "    pm.test('Login successful', () => {",
+                  "        pm.expect(responseJson.success).to.be.true;",
+                  "        pm.expect(responseJson.data.token).to.exist;",
+                  "    });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"usernameOrEmail\": \"test@example.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            },
+            "description": "Login with username or email and password"
+          }
+        },
+        {
+          "name": "Forgot Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"test@example.com\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/forgot-password",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "forgot-password"]
+            },
+            "description": "Send OTP for password reset (static OTP: 123456)"
+          }
+        },
+        {
+          "name": "Reset Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"otp\": \"123456\",\n  \"newPassword\": \"newpassword123\",\n  \"confirmPassword\": \"newpassword123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/reset-password?email=test@example.com",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "reset-password"],
+              "query": [
+                {
+                  "key": "email",
+                  "value": "test@example.com"
+                }
+              ]
+            },
+            "description": "Reset password using OTP and new password"
+          }
+        },
+        {
+          "name": "Get Current User",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/auth/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "me"]
+            },
+            "description": "Get current authenticated user information"
+          }
+        },
+        {
+          "name": "Logout User",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/auth/logout",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "logout"]
+            },
+            "description": "Logout current user and invalidate token"
+          }
+        }
+      ]
+    },
+    {
+      "name": "👤 User Profile",
+      "description": "User profile management endpoints",
+      "item": [
+        {
+          "name": "Get User Profile (Auth)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/auth/profile",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "profile"]
+            },
+            "description": "Get current user profile details via auth endpoint"
+          }
+        },
+        {
+          "name": "Get User Profile (Users)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users/profile",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "profile"]
+            },
+            "description": "Get current user profile details via users endpoint"
+          }
+        },
+        {
+          "name": "Get Current User (Me)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/auth/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "me"]
+            },
+            "description": "Get current user info via /me endpoint"
+          }
+        },
+        {
+          "name": "Update User Profile",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Updated First\",\n  \"lastName\": \"Updated Last\",\n  \"email\": \"updated@example.com\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/profile",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "profile"]
+            },
+            "description": "Update user profile information"
+          }
+        },
+        {
+          "name": "Change Password",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"currentPassword\": \"password123\",\n  \"newPassword\": \"newpassword123\",\n  \"confirmPassword\": \"newpassword123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/change-password",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "change-password"]
+            },
+            "description": "Change user password"
+          }
+        }
+      ]
+    },
+    {
+      "name": "📚 Books Shop",
+      "description": "Public books browsing endpoints with pagination, search, and filtering",
+      "item": [
+        {
+          "name": "Get All Books",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/books?page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["books"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number (default: 1)"
+                },
+                {
+                  "key": "limit",
+                  "value": "10",
+                  "description": "Items per page (default: 10)"
+                }
+              ]
+            },
+            "description": "Get all published books with pagination"
+          }
+        },
+        {
+          "name": "Search Books by Title",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/books?search=javascript&page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["books"],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "javascript",
+                  "description": "Search by title"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            },
+            "description": "Search books by title with pagination"
+          }
+        },
+        {
+          "name": "Sort Books A-Z",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/books?sortBy=title&sortOrder=asc",
+              "host": ["{{baseUrl}}"],
+              "path": ["books"],
+              "query": [
+                {
+                  "key": "sortBy",
+                  "value": "title",
+                  "description": "Sort field (title, price, createdAt)"
+                },
+                {
+                  "key": "sortOrder",
+                  "value": "asc",
+                  "description": "Sort order (asc, desc)"
+                }
+              ]
+            },
+            "description": "Sort books by title A-Z"
+          }
+        },
+        {
+          "name": "Sort Books Z-A",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/books?sortBy=title&sortOrder=desc",
+              "host": ["{{baseUrl}}"],
+              "path": ["books"],
+              "query": [
+                {
+                  "key": "sortBy",
+                  "value": "title"
+                },
+                {
+                  "key": "sortOrder",
+                  "value": "desc"
+                }
+              ]
+            },
+            "description": "Sort books by title Z-A"
+          }
+        },
+        {
+          "name": "Filter Books by Category",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/books?categoryId=category-uuid",
+              "host": ["{{baseUrl}}"],
+              "path": ["books"],
+              "query": [
+                {
+                  "key": "categoryId",
+                  "value": "category-uuid",
+                  "description": "Category UUID to filter by"
+                }
+              ]
+            },
+            "description": "Filter books by category"
+          }
+        },
+        {
+          "name": "Filter Books by Price Range",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/books?minPrice=10&maxPrice=50",
+              "host": ["{{baseUrl}}"],
+              "path": ["books"],
+              "query": [
+                {
+                  "key": "minPrice",
+                  "value": "10",
+                  "description": "Minimum price"
+                },
+                {
+                  "key": "maxPrice",
+                  "value": "50",
+                  "description": "Maximum price"
+                }
+              ]
+            },
+            "description": "Filter books by price range"
+          }
+        },
+        {
+          "name": "Get Book Details",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/books/book-uuid",
+              "host": ["{{baseUrl}}"],
+              "path": ["books", "book-uuid"],
+              "variable": [
+                {
+                  "key": "book-uuid",
+                  "value": "replace-with-actual-book-id"
+                }
+              ]
+            },
+            "description": "Get book details by ID including title, price, thumbnail, author, category"
+          }
+        },
+        {
+          "name": "Get Books with Multilingual Support (Arabic)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept-Language",
+                "value": "ar"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/books/localized?lang=ar",
+              "host": ["{{baseUrl}}"],
+              "path": ["books", "localized"],
+              "query": [
+                {
+                  "key": "lang",
+                  "value": "ar",
+                  "description": "Language code (en, ar)"
+                }
+              ]
+            },
+            "description": "Get books with Arabic translations"
+          }
+        }
+      ]
+    },
+    {
+      "name": "📖 My Books",
+      "description": "User's personal book management with full CRUD operations",
+      "item": [
+        {
+          "name": "Get My Books",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/books/my?page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["books", "my"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            },
+            "description": "Get current user's books with pagination"
+          }
+        },
+        {
+          "name": "Search My Books",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/books/my?search=my book&sortBy=title&sortOrder=asc",
+              "host": ["{{baseUrl}}"],
+              "path": ["books", "my"],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "my book"
+                },
+                {
+                  "key": "sortBy",
+                  "value": "title"
+                },
+                {
+                  "key": "sortOrder",
+                  "value": "asc"
+                }
+              ]
+            },
+            "description": "Search and sort user's own books"
+          }
+        },
+        {
+          "name": "Create New Book",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"My Awesome Book\",\n  \"description\": \"A detailed description of my book with interesting content and valuable insights.\",\n  \"price\": 29.99,\n  \"categoryId\": \"replace-with-category-uuid\",\n  \"thumbnail\": \"https://example.com/thumbnail.jpg\",\n  \"tags\": [\"tag-uuid-1\", \"tag-uuid-2\"]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/books/my",
+              "host": ["{{baseUrl}}"],
+              "path": ["books", "my"]
+            },
+            "description": "Create a new book with title, description, price, category, and thumbnail"
+          }
+        },
+        {
+          "name": "Update My Book",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Updated Book Title\",\n  \"description\": \"Updated description with new content.\",\n  \"price\": 34.99,\n  \"categoryId\": \"new-category-uuid\",\n  \"thumbnail\": \"https://example.com/new-thumbnail.jpg\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/books/my/book-uuid",
+              "host": ["{{baseUrl}}"],
+              "path": ["books", "my", "book-uuid"],
+              "variable": [
+                {
+                  "key": "book-uuid",
+                  "value": "replace-with-book-id"
+                }
+              ]
+            },
+            "description": "Update user's own book (only author can edit)"
+          }
+        },
+        {
+          "name": "Delete My Book",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/books/my/book-uuid",
+              "host": ["{{baseUrl}}"],
+              "path": ["books", "my", "book-uuid"],
+              "variable": [
+                {
+                  "key": "book-uuid",
+                  "value": "replace-with-book-id"
+                }
+              ]
+            },
+            "description": "Delete user's own book (only author can delete)"
+          }
+        }
+      ]
+    },
+    {
+      "name": "📂 Categories",
+      "description": "Book category management endpoints",
+      "item": [
+        {
+          "name": "Get All Categories",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/categories",
+              "host": ["{{baseUrl}}"],
+              "path": ["categories"]
+            },
+            "description": "Get all available book categories"
+          }
+        },
+        {
+          "name": "Create Category",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"New Category\",\n  \"description\": \"Description for the new category\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/categories",
+              "host": ["{{baseUrl}}"],
+              "path": ["categories"]
+            },
+            "description": "Create a new book category"
+          }
+        }
+      ]
+    },
+    {
+      "name": "🏷️ Tags",
+      "description": "Book tag management endpoints",
+      "item": [
+        {
+          "name": "Get All Tags",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/books/tags",
+              "host": ["{{baseUrl}}"],
+              "path": ["books", "tags"]
+            },
+            "description": "Get all available book tags"
+          }
+        },
+        {
+          "name": "Create Tag",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"new-tag\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/books/tags",
+              "host": ["{{baseUrl}}"],
+              "path": ["books", "tags"]
+            },
+            "description": "Create a new book tag"
+          }
+        }
+      ]
+    },
+    {
+      "name": "🌍 Multilingual Support",
+      "description": "Endpoints demonstrating multilingual capabilities",
+      "item": [
+        {
+          "name": "Create Multilingual Book",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"English Title\",\n  \"titleEn\": \"English Title\",\n  \"titleAr\": \"العنوان العربي\",\n  \"description\": \"English description\",\n  \"descriptionEn\": \"Detailed English description\",\n  \"descriptionAr\": \"وصف مفصل باللغة العربية\",\n  \"price\": 25.99,\n  \"categoryId\": \"category-uuid\",\n  \"thumbnail\": \"https://example.com/thumbnail.jpg\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/books/multilingual",
+              "host": ["{{baseUrl}}"],
+              "path": ["books", "multilingual"]
+            },
+            "description": "Create a book with multiple language translations"
+          }
+        },
+        {
+          "name": "Get Localized Books (English)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/books/localized?lang=en",
+              "host": ["{{baseUrl}}"],
+              "path": ["books", "localized"],
+              "query": [
+                {
+                  "key": "lang",
+                  "value": "en"
+                }
+              ]
+            },
+            "description": "Get books with English translations"
+          }
+        },
+        {
+          "name": "Get Localized Book by ID (Arabic)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/books/localized/book-uuid?lang=ar",
+              "host": ["{{baseUrl}}"],
+              "path": ["books", "localized", "book-uuid"],
+              "query": [
+                {
+                  "key": "lang",
+                  "value": "ar"
+                }
+              ],
+              "variable": [
+                {
+                  "key": "book-uuid",
+                  "value": "replace-with-book-id"
+                }
+              ]
+            },
+            "description": "Get a specific book with Arabic translations"
+          }
+        }
+      ]
+    },
+    {
+      "name": "🏥 Health Check",
+      "description": "Application health and status endpoints",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/../health",
+              "host": ["{{baseUrl}}"],
+              "path": ["..", "health"]
+            },
+            "description": "Check API health status"
+          }
+        },
+        {
+          "name": "API Info",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}",
+              "host": ["{{baseUrl}}"]
+            },
+            "description": "Get API information and available endpoints"
+          }
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Auto-set authorization header if token is available",
+          "const token = pm.collectionVariables.get('authToken');",
+          "if (token && !pm.request.headers.has('Authorization')) {",
+          "    pm.request.headers.add({",
+          "        key: 'Authorization',",
+          "        value: `Bearer ${token}`",
+          "    });",
+          "}"
+        ]
+      }
+    }
+  ]
+}
