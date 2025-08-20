@@ -76,7 +76,7 @@ This project demonstrates a real-world backend implementation following clean ar
 
 ### 1. Clone Repository
 ```bash
-git clone <repository-url>
+git clone https://github.com/YasserGomma/books-shop.git
 cd books-shop
 ```
 
@@ -444,26 +444,3 @@ API_PREFIX=/api
 - ✅ **Database connection** status
 - ✅ **Redis connection** status
 - ✅ **Environment** information
-
-## 👥 Contributing
-
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature/new-feature`
-3. Make changes and add tests
-4. Run tests: `npm run test`
-5. Run linting: `npm run lint:fix`
-6. Commit changes: `git commit -am 'Add new feature'`
-7. Push to branch: `git push origin feature/new-feature`
-8. Submit a pull request
-
-## 📄 License
-
-This project is licensed under the ISC License.
-
-## 🆘 Support
-
-For questions or issues:
-1. Check the **Postman collection** for API examples
-2. Review the **test files** for usage patterns
-3. Run `npm run test` to verify functionality
-4. Check the **health endpoint** for system status
