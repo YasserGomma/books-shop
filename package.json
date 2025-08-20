@@ -1,0 +1,33 @@
+{
+  "name": "books-shop",
+  "version": "1.0.0",
+  "description": "Full-stack book management application with Next.js frontend and Hono.js backend",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "scripts": {
+    "dev": "make dev",
+    "setup": "make setup",
+    "build": "make build",
+    "test": "make test",
+    "lint": "make lint",
+    "clean": "make clean",
+    "start": "make start"
+  },
+  "keywords": [
+    "nextjs",
+    "hono",
+    "typescript",
+    "tailwindcss",
+    "books",
+    "fullstack"
+  ],
+  "author": "Books Shop Team",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  }
+}
