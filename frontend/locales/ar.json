@@ -1,0 +1,79 @@
+{
+  "auth": {
+    "login": "تسجيل الدخول",
+    "logout": "تسجيل الخروج",
+    "email": "البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "loginTitle": "مرحباً بك في متجر الكتب",
+    "loginSubtitle": "الرجاء تسجيل الدخول للمتابعة",
+    "invalidCredentials": "البريد الإلكتروني أو كلمة المرور غير صحيحة"
+  },
+  "nav": {
+    "booksShop": "متجر الكتب",
+    "myBooks": "كتبي",
+    "profile": "ملفي الشخصي",
+    "editProfile": "تعديل الملف الشخصي"
+  },
+  "books": {
+    "title": "متجر الكتب",
+    "subtitle": "اكتشف واستكشف مجموعة الكتب الرائعة لدينا",
+    "bookTitle": "العنوان",
+    "price": "السعر",
+    "author": "المؤلف",
+    "category": "الفئة",
+    "description": "الوصف",
+    "search": "البحث عن كتب...",
+    "sortBy": "ترتيب حسب",
+    "sortAsc": "أ إلى ي",
+    "sortDesc": "ي إلى أ",
+    "filterByCategory": "تصفية حسب الفئة",
+    "priceRange": "نطاق السعر",
+    "view": "عرض",
+    "edit": "تعديل",
+    "delete": "حذف",
+    "create": "إنشاء كتاب",
+    "update": "تحديث الكتاب",
+    "noBooks": "لم يتم العثور على كتب",
+    "loading": "جاري تحميل الكتب...",
+    "error": "فشل تحميل الكتب. الرجاء المحاولة مرة أخرى.",
+    "filters": "المرشحات",
+    "clear": "مسح",
+    "priceLowHigh": "السعر (من الأقل إلى الأعلى)",
+    "priceHighLow": "السعر (من الأعلى إلى الأقل)",
+    "newestFirst": "الأحدث أولاً",
+    "oldestFirst": "الأقدم أولاً",
+    "minPrice": "أقل سعر",
+    "maxPrice": "أعلى سعر"
+  },
+  "categories": {
+    "all": "جميع الفئات",
+    "Technology": "التكنولوجيا",
+    "Science": "العلوم",
+    "History": "التاريخ",
+    "Fantasy": "الخيال",
+    "Biography": "السيرة الذاتية"
+  },
+  "actions": {
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "confirm": "تأكيد",
+    "delete": "حذف",
+    "edit": "تعديل",
+    "create": "إنشاء",
+    "update": "تحديث"
+  },
+  "profile": {
+    "name": "الاسم",
+    "email": "البريد الإلكتروني",
+    "editProfile": "تعديل الملف الشخصي",
+    "profileUpdated": "تم تحديث الملف الشخصي بنجاح"
+  },
+  "validation": {
+    "required": "هذا الحقل مطلوب",
+    "invalidEmail": "عنوان البريد الإلكتروني غير صالح",
+    "minLength": "الحد الأدنى {{min}} حرف مطلوب",
+    "maxLength": "الحد الأقصى {{max}} حرف مسموح",
+    "minPrice": "يجب أن يكون السعر على الأقل {{min}}",
+    "maxPrice": "لا يمكن أن يتجاوز السعر {{max}}"
+  }
+}

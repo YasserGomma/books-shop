@@ -1,0 +1,79 @@
+{
+  "auth": {
+    "login": "Login",
+    "logout": "Logout",
+    "email": "Email",
+    "password": "Password",
+    "loginTitle": "Welcome to Books Shop",
+    "loginSubtitle": "Please login to continue",
+    "invalidCredentials": "Invalid email or password"
+  },
+  "nav": {
+    "booksShop": "Books Shop",
+    "myBooks": "My Books",
+    "profile": "My Profile",
+    "editProfile": "Edit Profile"
+  },
+  "books": {
+    "title": "Books Shop",
+    "subtitle": "Discover and explore our collection of amazing books",
+    "bookTitle": "Title",
+    "price": "Price",
+    "author": "Author",
+    "category": "Category",
+    "description": "Description",
+    "search": "Search books...",
+    "sortBy": "Sort by",
+    "sortAsc": "A to Z",
+    "sortDesc": "Z to A",
+    "filterByCategory": "Filter by category",
+    "priceRange": "Price range",
+    "view": "View",
+    "edit": "Edit",
+    "delete": "Delete",
+    "create": "Create Book",
+    "update": "Update Book",
+    "noBooks": "No books found",
+    "loading": "Loading books...",
+    "error": "Failed to load books. Please try again.",
+    "filters": "Filters",
+    "clear": "Clear",
+    "priceLowHigh": "Price (Low to High)",
+    "priceHighLow": "Price (High to Low)",
+    "newestFirst": "Newest First",
+    "oldestFirst": "Oldest First",
+    "minPrice": "Min Price",
+    "maxPrice": "Max Price"
+  },
+  "categories": {
+    "all": "All Categories",
+    "Technology": "Technology",
+    "Science": "Science",
+    "History": "History",
+    "Fantasy": "Fantasy",
+    "Biography": "Biography"
+  },
+  "actions": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "update": "Update"
+  },
+  "profile": {
+    "name": "Name",
+    "email": "Email",
+    "editProfile": "Edit Profile",
+    "profileUpdated": "Profile updated successfully"
+  },
+  "validation": {
+    "required": "This field is required",
+    "invalidEmail": "Invalid email address",
+    "minLength": "Minimum {{min}} characters required",
+    "maxLength": "Maximum {{max}} characters allowed",
+    "minPrice": "Price must be at least {{min}}",
+    "maxPrice": "Price cannot exceed {{max}}"
+  }
+}
