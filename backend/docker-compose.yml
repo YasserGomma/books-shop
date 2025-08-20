@@ -1,0 +1,141 @@
+services:
+  # Books Shop API Application
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    ports:
+      - "8000:8000"
+    environment:
+      - NODE_ENV=production
+      - PORT=8000
+      - API_PREFIX=/api
+      - DATABASE_URL=postgresql://books_user:secure_password_123@postgres:5432/books_shop
+      - REDIS_URL=redis://:redis_password_123@redis:6379
+      - JWT_SECRET=production-jwt-secret-change-this-in-real-deployment
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - books-network
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:8000/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Development version of the app
+  app-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development
+    ports:
+      - "8002:8000"
+    environment:
+      - NODE_ENV=development
+      - PORT=8000
+      - API_PREFIX=/api
+      - DATABASE_URL=postgresql://books_user:secure_password_123@postgres:5432/books_shop
+      - REDIS_URL=redis://:redis_password_123@redis:6379
+      - JWT_SECRET=development-jwt-secret-for-testing
+    volumes:
+      - .:/app
+      - /app/node_modules
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - books-network
+    profiles:
+      - dev
+
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: books_shop
+      POSTGRES_USER: books_user
+      POSTGRES_PASSWORD: secure_password_123
+      POSTGRES_INITDB_ARGS: "--encoding=UTF-8"
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - books-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U books_user -d books_shop"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6380:6379"
+    command: redis-server --appendonly yes --requirepass redis_password_123
+    volumes:
+      - redis_data:/data
+    networks:
+      - books-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "--no-auth-warning", "-a", "redis_password_123", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  # Database Migration Service (runs once)
+  migrator:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: builder
+    environment:
+      - DATABASE_URL=postgresql://books_user:secure_password_123@postgres:5432/books_shop
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - books-network
+    command: npm run db:migrate
+    profiles:
+      - migration
+
+  # Database Seeder Service (runs once)
+  seeder:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: builder
+    environment:
+      - DATABASE_URL=postgresql://books_user:secure_password_123@postgres:5432/books_shop
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - books-network
+    command: npm run db:seed
+    profiles:
+      - seeding
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+
+networks:
+  books-network:
+    driver: bridge
